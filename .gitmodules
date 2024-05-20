@@ -4,3 +4,6 @@
 [submodule "nextjs-app"]
 	path = nextjs-app
 	url = https://github.com/retr0man99/nextjs-app.git
+[submodule "wordpress-app"]
+	path = wordpress-app
+	url = https://github.com/retr0man99/wordpress-app.git
