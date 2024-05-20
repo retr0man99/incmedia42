@@ -1,3 +1,6 @@
 [submodule "go-app"]
 	path = go-app
 	url = https://github.com/retr0man99/go-app.git
+[submodule "nextjs-app"]
+	path = nextjs-app
+	url = https://github.com/retr0man99/nextjs-app.git
