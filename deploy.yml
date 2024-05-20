@@ -1,0 +1,28 @@
+name: Deployment Action
+
+on:
+  repository_dispatch:
+    types: [deployment]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check workflow status
+        id: check_status
+        run: |
+          status_go=$(curl -s -u "retr0man99:$GITHUB_TOKEN" https://api.github.com/repos/incmedia42/go-app/actions/workflows/go_ci.yml/runs | jq '.workflow_runs[0].conclusion')
+          status_nextjs=$(curl -s -u "retr0man99:$GITHUB_TOKEN" https://api.github.com/repos/incmedia42/nextjs-app/actions/workflows/nextjs_ci.yml/runs | jq '.workflow_runs[0].conclusion')
+          status_wordpress=$(curl -s -u "retr0man99:$GITHUB_TOKEN" https://api.github.com/repos/incmedia42/wordpress-app/actions/workflows/wordpress_ci.yml/runs | jq '.workflow_runs[0].conclusion')
+
+          if [[ "$status_go" == "success" && "$status_nextjs" == "success" && "$status_wordpress" == "success" ]]; then
+            echo "::set-output name=success::true"
+          else
+            echo "::set-output name=success::false"
+          fi
+
+      - name: Deploy if successful
+        if: steps.check_status.outputs.success == 'true'
+        run: |
+          # Deployment steps here
